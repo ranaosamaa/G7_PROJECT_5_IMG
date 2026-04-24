@@ -150,12 +150,17 @@ Image convertToGrayscale(const Image& input) {
     int height = input.getHeight();
     int width = input.getWidth();
     Image output(width, height, 1); // Single channel for grayscale
-
     // TODO: Implement this function
-    // For each pixel:
-    //   Get R, G, B values from input image
-    //   Calculate gray = 0.299*R + 0.587*G + 0.114*B
-    //   Set output(y, x, 0) = gray
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++)
+        {
+            int r = input(i,j,0);
+            int g = input(i,j,1);
+            int b = input(i,j,2);
+            int gray = int(0.299 * r + 0.587 * g + 0.114 * b);
+            output(i,j,0) = gray;
+        }
+    }
 
     return output;
 }
@@ -320,9 +325,14 @@ Image rotate90(const Image& input) {
     Image output(height, width, channels); // Width and height are swapped
 
     // TODO: Implement this function
-    // For each pixel and each channel:
-    //   output(x, height-1-y, c) = input(y, x, c)
-
+    for(int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++)
+        { 
+            for(int ch = 0; ch < channels; ch++){
+                output(x, height - 1 - y, ch) = input(y, x, ch);
+            }
+        }
+    }
     return output;
 }
 
