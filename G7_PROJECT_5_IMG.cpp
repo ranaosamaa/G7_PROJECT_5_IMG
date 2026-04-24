@@ -102,7 +102,12 @@ public:
                     // For grayscale images, write the same value for all three channels
                     int gray = data[y][x][0];
                     file << gray << " " << gray << " " << gray << " ";
+<<<<<<< HEAD
                 } else {
+=======
+                }
+                else {
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
                     // For color images, write all three channels
                     for (int c = 0; c < 3; c++) {
                         file << data[y][x][c] << " ";
@@ -149,12 +154,26 @@ Image convertToGrayscale(const Image& input) {
     int height = input.getHeight();
     int width = input.getWidth();
     Image output(width, height, 1); // Single channel for grayscale
+<<<<<<< HEAD
 
     // TODO: Implement this function
     // For each pixel:
     //   Get R, G, B values from input image
     //   Calculate gray = 0.299*R + 0.587*G + 0.114*B
     //   Set output(y, x, 0) = gray
+=======
+    // TODO: Implement this function
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++)
+        {
+            int r = input(i,j,0);
+            int g = input(i,j,1);
+            int b = input(i,j,2);
+            int gray = int(0.299 * r + 0.587 * g + 0.114 * b);
+            output(i,j,0) = gray;
+        }
+    }
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
 
     return output;
 }
@@ -175,6 +194,7 @@ Image flipHorizontal(const Image& input) {
     int channels = input.getChannels();
     Image output(width, height, channels);
 
+<<<<<<< HEAD
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             for (int c = 0; c < channels; c++) {
@@ -182,6 +202,12 @@ Image flipHorizontal(const Image& input) {
             }
         }
     }
+=======
+    // TODO: Implement this function
+    // For each pixel and each channel:
+    //   output(y, width-1-x, c) = input(y, x, c)
+
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
     return output;
 }
 
@@ -201,6 +227,7 @@ Image flipVertical(const Image& input) {
     int channels = input.getChannels();
     Image output(width, height, channels);
 
+<<<<<<< HEAD
  for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             for (int c = 0; c < channels; c++) {
@@ -208,6 +235,11 @@ Image flipVertical(const Image& input) {
             }
         }
     }
+=======
+    // TODO: Implement this function
+    // For each pixel and each channel:
+    //   output(height-1-y, x, c) = input(y, x, c)
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
 
     return output;
 }
@@ -254,10 +286,23 @@ Image adjustContrast(const Image& input, float factor) {
     int channels = input.getChannels();
     Image output(width, height, channels);
 
+<<<<<<< HEAD
     // TODO: Implement this function
     // For each pixel and each channel:
     //   new_value = factor * (input(y, x, c) - 128) + 128
     //   output(y, x, c) = max(0, min(255, new_value))
+=======
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channels; c++) {
+                int new_val = (int)(factor * (input(y, x, c) - 128) + 128);
+                if (new_val < 0) new_val = 0;
+                if (new_val > 255) new_val = 255;
+                output(y, x, c) = new_val;
+            }
+        }
+    }
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
 
     return output;
 }
@@ -278,6 +323,7 @@ Image applyBlur(const Image& input) {
     int width = input.getWidth();
     int channels = input.getChannels();
     Image output(width, height, channels);
+<<<<<<< HEAD
 
     // TODO: Implement this function
     // For each pixel (from y=1 to height-2, x=1 to width-2) and each channel:
@@ -286,6 +332,30 @@ Image applyBlur(const Image& input) {
     //     sum += input(y+ky, x+kx, c)
     //   output(y, x, c) = sum / 9
 
+=======
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int c = 0; c < channels; c++) {
+                output(y, x, c) = input(y, x, c);
+            }
+        }
+    }
+
+    for (int y = 1; y < height-1; y++) {
+        for (int x = 1; x < width-1; x++) {
+            for (int c = 0; c < channels; c++) {
+                int sum = 0;
+
+                for (int ky = -1; ky <= 1; ky++) {
+                    for (int kx = -1; kx <= 1; kx++) {
+                        sum += input(y + ky, x + kx, c);
+                    }
+                }
+                output(y, x, c) = sum / 9;
+            }
+        }
+    }
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
     return output;
 }
 
@@ -306,9 +376,20 @@ Image rotate90(const Image& input) {
     Image output(height, width, channels); // Width and height are swapped
 
     // TODO: Implement this function
+<<<<<<< HEAD
     // For each pixel and each channel:
     //   output(x, height-1-y, c) = input(y, x, c)
 
+=======
+    for(int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++)
+        { 
+            for(int ch = 0; ch < channels; ch++){
+                output(x, height - 1 - y, ch) = input(y, x, ch);
+            }
+        }
+    }
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
     return output;
 }
 
@@ -364,8 +445,14 @@ int main() {
     }
 
     cout << "\nImage loaded successfully. Dimensions: "
+<<<<<<< HEAD
               << input.getWidth() << "x" << input.getHeight() << "\n\n";
 
+=======
+        << input.getWidth() << "x" << input.getHeight() << "\n\n";
+
+    
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
     // Apply various transformations
     cout << "Applying image transformations...\n";
 
@@ -403,6 +490,10 @@ int main() {
     cout << "Contrast adjusted image data:\n";
     contrast.print();
     cout << endl;
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
 
     Image blur = applyBlur(input);
     blur.savePPM("blurred_image.ppm");
@@ -410,7 +501,11 @@ int main() {
     cout << "Blurred image data:\n";
     blur.print();
     cout << endl;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 91838967e6f99e939a132adbdcea911f22c4dee0
     Image rotated = rotate90(input);
     rotated.savePPM("rotated90_image.ppm");
     cout << "- 90-degree rotation completed\n";
